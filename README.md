@@ -83,7 +83,7 @@ A carefully crafted system prompt provides instructions and context to the LLM:
 
 ```typescript
 const systemPrompt = {
-  instruction: `You are an expert agent builder for AgentDock Pro.
+  instruction: `You are an expert agent builder for AutoGPT Pro.
   Analyze the user's natural language description and create the optimal agent configuration.`,
   
   availableTools: {
@@ -219,17 +219,17 @@ System: "I found these templates that match your needs:
   3. Executive Assistant"
 ```
 
-## Integration with AgentDock Core
+## Integration with AutoGPT Core
 
 Core users can access Pro-created agents with API keys:
 
 ```mermaid
 graph LR
-    subgraph "AgentDock Pro"
+    subgraph "AutoGPT Pro"
         A[Natural Language Creation] --> B[Agent Configuration]
     end
     
-    subgraph "AgentDock Core"
+    subgraph "AutoGPT Core"
         C[API Integration] --> D[Agent Usage]
     end
     
