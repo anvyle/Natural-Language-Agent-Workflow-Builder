@@ -153,13 +153,15 @@ const systemPrompt = {
 Agents created via this builder can be directly pushed into AutoGPT Core or Pro:
 
 ```mermaid
-graph LR
-    A[Natural Language Builder] --> B[agent.json]
-    B --> C[AutoGPT Core]
-    B --> D[AutoGPT Pro Canvas]
-    D --> E[Deploy or Share Agent]
+graph TD
+    A[Natural Language Input] --> B[LLM with Prompt + Tool Summary]
+    B --> C[Structured Agent JSON]
+    C --> D[Visual Editor + Feedback]
+    D --> E[Agent JSON (Final)]
+    E --> F[Test Agent or Export to Core]
 
-    style A fill:#0066cc,color:#ffffff,stroke:#0033cc
+    style B fill:#0066cc,color:#ffffff,stroke:#0033cc
+    style C fill:#e6f2ff,stroke:#99ccff
 ```
 
 ---
