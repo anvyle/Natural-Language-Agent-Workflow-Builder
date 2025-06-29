@@ -58,12 +58,9 @@ sequenceDiagram
 ### 🔩 Implementation Diagram
 
 ```mermaid
-graph TD
-    A[Natural Language Input] --> B[LLM with Prompt + Tool Summary]
-    B --> C[Structured Agent JSON]
-    C --> D[Visual Editor + Feedback]
-    D --> E[Agent JSON (Final)]
-    E --> F[Test Agent or Export to Core]
+graph TD;
+    A[Natural Language Input] --> B[LLM with Prompt + Tool Summary] --> C[Structured Agent JSON]
+    C --> D[Visual Editor + Feedback] --> E[Final Agent JSON] --> F[Test Agent or Export to Core]
 ```
 
 ---
@@ -141,24 +138,6 @@ const systemPrompt = {
     memory: { enabled: true, keys: [] }
   }
 };
-```
-
----
-
-## 🛠 Integration with AutoGPT Core
-
-Agents created via this builder can be directly pushed into AutoGPT Core or Pro:
-
-```mermaid
-graph TD
-    A[Natural Language Input] --> B[LLM with Prompt + Tool Summary]
-    B --> C[Structured Agent JSON]
-    C --> D[Visual Editor + Feedback]
-    D --> E[Agent JSON (Final)]
-    E --> F[Test Agent or Export to Core]
-
-    style B fill:#0066cc,color:#ffffff,stroke:#0033cc
-    style C fill:#e6f2ff,stroke:#99ccff
 ```
 
 ---
