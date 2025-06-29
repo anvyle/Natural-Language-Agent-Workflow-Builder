@@ -64,9 +64,6 @@ graph TD
     C --> D[Visual Editor + Feedback]
     D --> E[Agent JSON (Final)]
     E --> F[Test Agent or Export to Core]
-
-    style B fill:#0066cc,color:#ffffff,stroke:#0033cc
-    style C fill:#e6f2ff,stroke:#99ccff
 ```
 
 ---
