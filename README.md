@@ -1,266 +1,195 @@
-# Natural Language AI Agent Builder
+# 🧠 Natural Language Agent/Workflow Builder
 
-The Natural Language AI Agent Builder allows users to create sophisticated AI agents and workflows using plain language descriptions instead of complex coding or visual programming.
+Build powerful agents and workflows **using plain language**. This builder lets users describe their goals in natural language and instantly generate fully structured, testable agents without needing to write JSON or touch low-level logic.
 
-## Current Status
+---
 
-**Status: Planned**
+## 🎯 Purpose
 
-The Natural Language AI Agent Builder is currently in the design phase, with implementation planned for the Pro version.
+Designed to **streamline agent creation**, this system bridges the gap between **human-friendly goal descriptions** and **machine-readable configurations** (`agent.json`). It's ideal for:
 
-## Feature Overview
+- Builders of agentic workflows
+- Automation teams who want to rapidly prototype and iterate  
+- Users seeking to abstract away tool orchestration and task decomposition
 
-The Natural Language AI Agent Builder will provide:
+---
 
-- **Language-Based Creation**: Describe agents and workflows in your own words
-- **Instant Prototyping**: Test your agents immediately after creation
-- **Automatic Tool Selection**: Smart configuration of appropriate tools
-- **Visual Builder Integration**: Seamless transition between natural language and visual editing
-- **Multi-Language Support**: Create agents using any language, not just English
-- **Workflow Generation**: Create complex, multi-step workflows through description
+## 🔗 Target Users & Platforms
 
-## Architecture Diagrams
+- **No-code/Low-code users** (e.g., Zapier/IFTTT-style audience)  
+- **Agent developers**
+- **Teams building agent-based products** in enterprise AI, operations, research, or marketing automation
 
-### Creation Process
+---
+
+## 🚀 Key Features
+
+- **Natural Language to Agent JSON**: Input plain English, get structured `agent.json`
+- **Auto Tool Selection**: Picks compatible tools and fills in required schemas
+- **Agent Personality & Prompt Design**: Crafts system prompts and memory config automatically
+- **Visual Canvas Integration**: Syncs output to a visual editor for review and refinement
+- **Feedback Loop**: Users can revise the generated tasks and guide improvements
+- **Multi-Language Input**: Supports non-English agent descriptions
+- **Template Suggestions**: Recognizes common intents and suggests agent templates
+
+---
+
+## ⚙️ Architecture Overview
+
+### 🛠 Creation Flow
 
 ```mermaid
 sequenceDiagram
     participant User
-    participant NLInterface as Natural Language Interface
-    participant LLM as Large Language Model
-    participant Builder as Visual Builder
-    participant DB as Database
+    participant UI as NL Agent Builder UI
+    participant LLM as Gemini/OpenAI via LangChain
+    participant Engine as AutoGPT Generator Logic
+    participant Store as Vector Store + Agent DB
 
-    User->>NLInterface: Describes agent in natural language
-    NLInterface->>LLM: Sends description with system prompt
-    LLM->>Builder: Generates agent configuration
-    Builder->>DB: Saves agent
-    Builder->>User: Displays visual representation
-    User->>Builder: Makes adjustments (if needed)
+    User->>UI: Describe agent in natural language
+    UI->>LLM: Send description with system prompt + tool summaries
+    LLM->>Engine: Generates validated agent.json (tasks, tools, prompt)
+    Engine->>Store: Save and embed agent
+    Engine->>UI: Return for visual review + edit
 ```
 
-### Implementation Architecture
+---
+
+### 🔩 Implementation Diagram
 
 ```mermaid
 graph TD
-    A[User Input] --> B[LLM with System Prompt]
-    B --> C[Generated Agent/Workflow]
-    C --> D[Visual Editor]
-    D --> E[User Refinement]
-    E --> F[Agent Execution]
-    
+    A[Natural Language Input] --> B[LLM with Prompt + Tool Summary]
+    B --> C[Structured Agent JSON]
+    C --> D[Visual Editor + Feedback]
+    D --> E[Agent JSON (Final)]
+    E --> F[Test Agent or Export to Core]
+
     style B fill:#0066cc,color:#ffffff,stroke:#0033cc
     style C fill:#e6f2ff,stroke:#99ccff
 ```
 
-### Agent Example
+---
 
-```mermaid
-graph TD
-    A[User Input] --> B[Agent Node]
-    B --> C{Tool Selection}
-    C -->|Research| D[Web Search]
-    C -->|Data| E[Database Tool]
-    C -->|Communication| F[Platform Node]
-    F --> G[Telegram]
-    F --> H[Slack]
-    B --> I[Memory System]
-    D --> B
-    E --> B
-    
-    style B fill:#0066cc,color:#ffffff,stroke:#0033cc
-    style F fill:#e6f2ff,stroke:#99ccff
-    style I fill:#e6f2ff,stroke:#99ccff
+## 🧠 Example Agent Descriptions
+
+### 🧑‍💼 Sales Outreach Agent
+
+**Input**:  
+> "Create an agent that finds LinkedIn profiles, enriches them with emails, and drafts personalized cold emails."
+
+**Generated Output**:
+- `tools`: ApolloSearchBlock, ProxycurlEnrichmentBlock, LLMEmailWriterBlock
+- `systemPrompt`: Configured with sales tone, personalization emphasis
+- `tasks`: 4-step sequence with memory setup and enrichment loop
+
+---
+
+### 📈 Market Research Agent
+
+**Input**:  
+> "Build an agent that tracks competitor news, summarizes insights, and stores them in Notion."
+
+**Output**:
+- WebSearchBlock + FileSummarizerBlock  
+- ExportToNotionBlock  
+- Agent system prompt tailored to trend analysis
+
+---
+
+## ✨ Advanced Features
+
+### 🧩 Tool Auto-Mapping
+
+The LLM understands tool constraints (input/output schemas, auth, limits) and matches natural intent to compatible tools. If a required function isn’t supported, it suggests:
+
+> ❌ *"This goal can't be fully accomplished using the current toolset. Try: 'Summarize uploaded PDFs instead of real-time web scraping.'"*
+
+---
+
+### 🧠 Decomposition + Revision Loop
+
+Users can:
+- View subtasks in a friendly editable textbox
+- Give refinement instructions (e.g., “Add filtering step before export”)
+- Revert to original, or compare LLM vs user-edited
+
+---
+
+### 🌐 Multi-Language Support
+
+Agent generation works in any input language. Examples:
+
+```
+EN: “Create a content scheduler for LinkedIn + Twitter.”
+ES: “Crea un planificador de contenido para redes sociales.”
+JA: “ソーシャルメディアの投稿をスケジュールするエージェントを作成してください。”
 ```
 
-## Implementation Details
+---
 
-The Natural Language AI Agent Builder will be implemented through:
+## 📦 System Prompt Template (LangChain)
 
-### 1. System Prompt
-
-A carefully crafted system prompt provides instructions and context to the LLM:
-
-```typescript
+```ts
 const systemPrompt = {
-  instruction: `You are an expert agent builder for AutoGPT Pro.
-  Analyze the user's natural language description and create the optimal agent configuration.`,
-  
-  availableTools: {
-    "webSearch": {
-      description: "Searches the web for information",
-      inputs: { "query": "string" },
-      outputs: { "results": "array" }
-    },
-    "databaseQuery": {
-      description: "Queries databases",
-      inputs: { "sql": "string" },
-      outputs: { "results": "array" }
-    },
-    // More tools...
-  },
-  
+  role: "You are an expert AutoGPT agent architect.",
+  task: "Generate a complete agent.json with subtasks, memory, prompt, and tools.",
+  tools: blockSummaries,  // injected summaries from blocks.json
+  constraints: "Use only valid tools. Respect input/output schema.",
   outputFormat: {
-    type: "AgentConfiguration",
-    example: {
-      name: "Research Assistant",
-      description: "Helps with research tasks",
-      systemPrompt: "You are a research assistant...",
-      tools: ["webSearch", "fileSummarizer"]
-    }
+    name: "string",
+    description: "string",
+    systemPrompt: "string",
+    tasks: [{ id, name, blockName, inputs }],
+    memory: { enabled: true, keys: [] }
   }
 };
 ```
 
-### 2. LLM Processing
+---
 
-The LLM analyzes the description to determine:
+## 🛠 Integration with AutoGPT Core
 
-- Agent's purpose and personality
-- Required tools and capabilities
-- System prompt for optimal behavior
-- Memory requirements
-- Appropriate connectors to platforms
-
-### 3. Visual Builder Integration
-
-The generated agent appears in the visual builder for inspection and refinement:
-
-- Node connections automatically created
-- Tool configurations pre-populated
-- System prompt displayed for editing
-- Memory systems attached as needed
-
-## Workflow Examples
-
-### Customer Support Agent
-
-**Natural Language Input:**
-"Create an agent that handles customer support requests, can search our knowledge base, and escalates to human agents when necessary."
-
-```mermaid
-graph TD
-    A[Platform Node] --> B[Support Agent]
-    B --> C{Query Type}
-    C -->|FAQ| D[Knowledge Base]
-    C -->|Account| E[Customer DB]
-    C -->|Complex| F[Human Escalation]
-    D --> B
-    E --> B
-    B --> G[Memory System]
-    
-    style B fill:#0066cc,color:#ffffff,stroke:#0033cc
-```
-
-### Research Assistant Workflow
-
-**Natural Language Input:**
-"I need a workflow that researches topics, summarizes findings, and sends daily reports by email."
+Agents created via this builder can be directly pushed into AutoGPT Core or Pro:
 
 ```mermaid
 graph LR
-    A[Time Trigger] --> B[Research Agent]
-    B --> C[Web Search]
-    C --> B
-    B --> D[Summarization]
-    D --> E[Email Sender]
-    
-    style B fill:#0066cc,color:#ffffff,stroke:#0033cc
-```
+    A[Natural Language Builder] --> B[agent.json]
+    B --> C[AutoGPT Core]
+    B --> D[AutoGPT Pro Canvas]
+    D --> E[Deploy or Share Agent]
 
-### Trading Monitor Workflow
-
-**Natural Language Input:**
-"Build a workflow that monitors stock prices, analyzes market trends, and alerts me on Telegram when specific conditions are met."
-
-```mermaid
-graph TD
-    A[Market Data] --> B[Analysis Agent]
-    B --> C{Conditions}
-    C -->|Alert| D[Telegram Node]
-    C -->|Record| E[Database]
-    C -->|Normal| F[No Action]
-    
-    style B fill:#0066cc,color:#ffffff,stroke:#0033cc
-    style D fill:#e6f2ff,stroke:#99ccff
-```
-
-## Key Features
-
-### 1. Multi-Language Support
-
-Create agents in any language:
-
-```
-English: "Create a customer support agent with knowledge base access"
-Spanish: "Crea un agente de atención al cliente con acceso a la base de conocimientos"
-Japanese: "ナレッジベースにアクセスできるカスタマーサポートエージェントを作成する"
-```
-
-### 2. Canvas Selection Enhancement
-
-Select specific parts of an existing workflow and modify them with natural language:
-
-```
-"Add error handling to this section of the workflow"
-"Improve the response formatting for better readability"
-"Make this agent more creative in its responses"
-```
-
-### 3. Template Integration
-
-The system suggests templates based on your description:
-
-```
-Input: "Create an agent that helps with scheduling meetings"
-System: "I found these templates that match your needs:
-  1. Calendar Assistant
-  2. Meeting Coordinator
-  3. Executive Assistant"
-```
-
-## Integration with AutoGPT Core
-
-Core users can access Pro-created agents with API keys:
-
-```mermaid
-graph LR
-    subgraph "AutoGPT Pro"
-        A[Natural Language Creation] --> B[Agent Configuration]
-    end
-    
-    subgraph "AutoGPT Core"
-        C[API Integration] --> D[Agent Usage]
-    end
-    
-    B --> C
-    
     style A fill:#0066cc,color:#ffffff,stroke:#0033cc
-    style B fill:#e6f2ff,stroke:#99ccff
 ```
 
-## Benefits
+---
 
-1. **Accessibility**: Create agents without coding or technical knowledge
-2. **Rapid Prototyping**: Move from idea to working agent in minutes
-3. **Iterative Development**: Refine your agent through natural conversation
-4. **Reduced Cognitive Load**: Focus on what you want, not implementation details
-5. **Enhanced Productivity**: Build complex workflows with simple descriptions
+## 🗓 Development Timeline
 
-## Timeline
+| Phase                        | Status      | Notes |
+|-----------------------------|-------------|-------|
+| Prompt & Decomposer Design  | ✅ Complete | Includes tool-based task planning |
+| Agent JSON Validation Layer | ✅ Complete | Schema checks + fallbacks |
+| Feedback Loop UI            | ✅ Complete | Editable textbox + revision |
+| Multi-Example Retrieval     | ✅ Complete | Few-shot grounding with vector search |
+| Visual Integration (Streamlit) | 🛠 In Progress | Canvas + sidebar controls |
+| Pattern Memory & RAG Assist | 🔜 Planned  | Retrieve successful past agents to improve outputs |
 
-| Phase | Status | Description |
-|-------|--------|-------------|
-| Design | In Progress | System architecture and prompt design |
-| Simple Agent Creation | Planned | Basic agent creation from descriptions |
-| Tool Integration | Planned | Smart tool selection and configuration |
-| Visual Builder Integration | Planned | Combined natural language and visual editing |
-| Advanced Workflow Generation | Future | Complex multi-step workflow creation |
-| Pattern Learning | Future | Improving generation through successful patterns |
+---
 
-## Connection to Other Roadmap Items
+## 🔮 Coming Soon
 
-- **Platform Integration**: Easily configure agent connections to platforms
-- **Advanced Memory Systems**: Natural language setup of memory requirements
-- **Multi-Agent Collaboration**: Describe complex agent interactions
-- **Tool Integration**: Automatic tool selection and configuration 
+- **Multi-Agent Workflows**: Generate collaborative agents from high-level tasks
+- **Template Memory**: Recommend similar past agents and reuse config
+- **Block-by-Block Debugging**: Stepwise preview + explanation of tool usage
+- **Self-healing Agents**: Suggest alternative blocks if one fails
+
+---
+
+## ✅ Benefits
+
+- **Accessible**: Anyone can describe agents — no JSON or technical knowledge required  
+- **Fast**: Go from idea to deployable agent in minutes  
+- **Refinable**: Mix natural input with visual UI for collaborative iteration  
+- **Smart**: Guided by block schemas and best-practice prompt engineering  
+- **Reusable**: Agent templates and memory-based RAG enable continual improvement
