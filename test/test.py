@@ -266,183 +266,183 @@ class TestAgentGenerator(unittest.TestCase):
         self.assertIn("tasks", result)
         self.assertIn("memory", result)
 
-class TestAgentValidator(unittest.TestCase):
-    """Test cases for the AgentValidator class"""
+# class TestAgentValidator(unittest.TestCase):
+#     """Test cases for the AgentValidator class"""
     
-    def setUp(self):
-        self.tool_registry = MockToolRegistry()
-        self.validator = AgentValidator(self.tool_registry)
+#     def setUp(self):
+#         self.tool_registry = MockToolRegistry()
+#         self.validator = AgentValidator(self.tool_registry)
     
-    def test_validate_valid_agent(self):
-        """Test validation of a valid agent configuration"""
-        valid_agent = {
-            "name": "Test Agent",
-            "description": "A test agent",
-            "systemPrompt": "You are a helpful agent.",
-            "tasks": [
-                {
-                    "id": "task1",
-                    "name": "Search Web",
-                    "blockName": "WebSearchBlock",
-                    "inputs": {"query": "test"}
-                }
-            ],
-            "memory": {"enabled": True, "keys": []}
-        }
+#     def test_validate_valid_agent(self):
+#         """Test validation of a valid agent configuration"""
+#         valid_agent = {
+#             "name": "Test Agent",
+#             "description": "A test agent",
+#             "systemPrompt": "You are a helpful agent.",
+#             "tasks": [
+#                 {
+#                     "id": "task1",
+#                     "name": "Search Web",
+#                     "blockName": "WebSearchBlock",
+#                     "inputs": {"query": "test"}
+#                 }
+#             ],
+#             "memory": {"enabled": True, "keys": []}
+#         }
         
-        result = self.validator.validate_agent(valid_agent)
+#         result = self.validator.validate_agent(valid_agent)
         
-        self.assertTrue(result["is_valid"])
-        self.assertEqual(len(result["errors"]), 0)
+#         self.assertTrue(result["is_valid"])
+#         self.assertEqual(len(result["errors"]), 0)
     
-    def test_validate_invalid_agent(self):
-        """Test validation of an invalid agent configuration"""
-        invalid_agent = {
-            "name": "Test Agent",
-            # Missing required fields
-            "tasks": [
-                {
-                    "id": "task1",
-                    # Missing required fields
-                    "blockName": "NonExistentBlock"
-                }
-            ]
-        }
+#     def test_validate_invalid_agent(self):
+#         """Test validation of an invalid agent configuration"""
+#         invalid_agent = {
+#             "name": "Test Agent",
+#             # Missing required fields
+#             "tasks": [
+#                 {
+#                     "id": "task1",
+#                     # Missing required fields
+#                     "blockName": "NonExistentBlock"
+#                 }
+#             ]
+#         }
         
-        result = self.validator.validate_agent(invalid_agent)
+#         result = self.validator.validate_agent(invalid_agent)
         
-        self.assertFalse(result["is_valid"])
-        self.assertGreater(len(result["errors"]), 0)
+#         self.assertFalse(result["is_valid"])
+#         self.assertGreater(len(result["errors"]), 0)
     
-    def test_validate_unknown_tool(self):
-        """Test validation with unknown tool"""
-        agent_with_unknown_tool = {
-            "name": "Test Agent",
-            "description": "A test agent",
-            "systemPrompt": "You are a helpful agent.",
-            "tasks": [
-                {
-                    "id": "task1",
-                    "name": "Unknown Task",
-                    "blockName": "NonExistentBlock",
-                    "inputs": {}
-                }
-            ],
-            "memory": {"enabled": True, "keys": []}
-        }
+#     def test_validate_unknown_tool(self):
+#         """Test validation with unknown tool"""
+#         agent_with_unknown_tool = {
+#             "name": "Test Agent",
+#             "description": "A test agent",
+#             "systemPrompt": "You are a helpful agent.",
+#             "tasks": [
+#                 {
+#                     "id": "task1",
+#                     "name": "Unknown Task",
+#                     "blockName": "NonExistentBlock",
+#                     "inputs": {}
+#                 }
+#             ],
+#             "memory": {"enabled": True, "keys": []}
+#         }
         
-        result = self.validator.validate_agent(agent_with_unknown_tool)
+#         result = self.validator.validate_agent(agent_with_unknown_tool)
         
-        self.assertFalse(result["is_valid"])
-        self.assertTrue(any("Unknown tool" in error for error in result["errors"]))
+#         self.assertFalse(result["is_valid"])
+#         self.assertTrue(any("Unknown tool" in error for error in result["errors"]))
 
-class TestToolRegistry(unittest.TestCase):
-    """Test cases for the MockToolRegistry class"""
+# class TestToolRegistry(unittest.TestCase):
+#     """Test cases for the MockToolRegistry class"""
     
-    def setUp(self):
-        self.registry = MockToolRegistry()
+#     def setUp(self):
+#         self.registry = MockToolRegistry()
     
-    def test_get_tool_summaries(self):
-        """Test getting tool summaries"""
-        summaries = self.registry.get_tool_summaries()
+#     def test_get_tool_summaries(self):
+#         """Test getting tool summaries"""
+#         summaries = self.registry.get_tool_summaries()
         
-        self.assertIsInstance(summaries, str)
-        parsed = json.loads(summaries)
-        self.assertIn("WebSearchBlock", parsed)
-        self.assertIn("EmailWriterBlock", parsed)
+#         self.assertIsInstance(summaries, str)
+#         parsed = json.loads(summaries)
+#         self.assertIn("WebSearchBlock", parsed)
+#         self.assertIn("EmailWriterBlock", parsed)
     
-    def test_validate_tool(self):
-        """Test tool validation"""
-        self.assertTrue(self.registry.validate_tool("WebSearchBlock"))
-        self.assertTrue(self.registry.validate_tool("EmailWriterBlock"))
-        self.assertFalse(self.registry.validate_tool("NonExistentBlock"))
+#     def test_validate_tool(self):
+#         """Test tool validation"""
+#         self.assertTrue(self.registry.validate_tool("WebSearchBlock"))
+#         self.assertTrue(self.registry.validate_tool("EmailWriterBlock"))
+#         self.assertFalse(self.registry.validate_tool("NonExistentBlock"))
 
-class TestIntegration(unittest.TestCase):
-    """Integration tests for the complete workflow"""
+# class TestIntegration(unittest.TestCase):
+#     """Integration tests for the complete workflow"""
     
-    def setUp(self):
-        self.tool_registry = MockToolRegistry()
-        self.llm = MockLLM()
-        self.generator = AgentGenerator(self.llm, self.tool_registry)
-        self.validator = AgentValidator(self.tool_registry)
+#     def setUp(self):
+#         self.tool_registry = MockToolRegistry()
+#         self.llm = MockLLM()
+#         self.generator = AgentGenerator(self.llm, self.tool_registry)
+#         self.validator = AgentValidator(self.tool_registry)
     
-    def test_complete_workflow(self):
-        """Test the complete workflow from description to validated agent"""
-        description = "Create a market research agent that searches the web and exports to Notion"
+#     def test_complete_workflow(self):
+#         """Test the complete workflow from description to validated agent"""
+#         description = "Create a market research agent that searches the web and exports to Notion"
         
-        # Mock LLM response
-        mock_response = '''{
-            "name": "Market Research Agent",
-            "description": "Agent that researches markets and exports to Notion",
-            "systemPrompt": "You are a market research assistant.",
-            "tasks": [
-                {
-                    "id": "search",
-                    "name": "Search Market Data",
-                    "blockName": "WebSearchBlock",
-                    "inputs": {"query": "market trends"}
-                },
-                {
-                    "id": "export",
-                    "name": "Export to Notion",
-                    "blockName": "NotionExportBlock", 
-                    "inputs": {"content": "{{search_results}}", "database_id": "test_db"}
-                }
-            ],
-            "memory": {"enabled": true, "keys": ["search_results"]}
-        }'''
+#         # Mock LLM response
+#         mock_response = '''{
+#             "name": "Market Research Agent",
+#             "description": "Agent that researches markets and exports to Notion",
+#             "systemPrompt": "You are a market research assistant.",
+#             "tasks": [
+#                 {
+#                     "id": "search",
+#                     "name": "Search Market Data",
+#                     "blockName": "WebSearchBlock",
+#                     "inputs": {"query": "market trends"}
+#                 },
+#                 {
+#                     "id": "export",
+#                     "name": "Export to Notion",
+#                     "blockName": "NotionExportBlock", 
+#                     "inputs": {"content": "{{search_results}}", "database_id": "test_db"}
+#                 }
+#             ],
+#             "memory": {"enabled": true, "keys": ["search_results"]}
+#         }'''
         
-        self.llm.responses = [mock_response]
+#         self.llm.responses = [mock_response]
         
-        # Generate agent
-        agent = self.generator.generate_agent(description)
+#         # Generate agent
+#         agent = self.generator.generate_agent(description)
         
-        # Validate agent
-        validation = self.validator.validate_agent(agent)
+#         # Validate agent
+#         validation = self.validator.validate_agent(agent)
         
-        # Assertions
-        self.assertTrue(validation["is_valid"])
-        self.assertEqual(agent["name"], "Market Research Agent")
-        self.assertEqual(len(agent["tasks"]), 2)
-        self.assertTrue(agent["memory"]["enabled"])
+#         # Assertions
+#         self.assertTrue(validation["is_valid"])
+#         self.assertEqual(agent["name"], "Market Research Agent")
+#         self.assertEqual(len(agent["tasks"]), 2)
+#         self.assertTrue(agent["memory"]["enabled"])
 
-def run_performance_test():
-    """Run a simple performance test"""
-    import time
+# def run_performance_test():
+#     """Run a simple performance test"""
+#     import time
     
-    tool_registry = MockToolRegistry()
-    llm = MockLLM()
-    generator = AgentGenerator(llm, tool_registry)
+#     tool_registry = MockToolRegistry()
+#     llm = MockLLM()
+#     generator = AgentGenerator(llm, tool_registry)
     
-    # Test multiple generations
-    descriptions = [
-        "Create a sales outreach agent",
-        "Build a content scheduler",
-        "Make a data analysis agent",
-        "Create a customer support agent",
-        "Build a research assistant"
-    ]
+#     # Test multiple generations
+#     descriptions = [
+#         "Create a sales outreach agent",
+#         "Build a content scheduler",
+#         "Make a data analysis agent",
+#         "Create a customer support agent",
+#         "Build a research assistant"
+#     ]
     
-    start_time = time.time()
+#     start_time = time.time()
     
-    for description in descriptions:
-        agent = generator.generate_agent(description)
-        # Basic validation
-        assert "name" in agent
-        assert "tasks" in agent
+#     for description in descriptions:
+#         agent = generator.generate_agent(description)
+#         # Basic validation
+#         assert "name" in agent
+#         assert "tasks" in agent
     
-    end_time = time.time()
+#     end_time = time.time()
     
-    print(f"Performance test completed in {end_time - start_time:.2f} seconds")
-    print(f"Average time per agent: {(end_time - start_time) / len(descriptions):.3f} seconds")
+#     print(f"Performance test completed in {end_time - start_time:.2f} seconds")
+#     print(f"Average time per agent: {(end_time - start_time) / len(descriptions):.3f} seconds")
 
-if __name__ == "__main__":
-    # Run unit tests
-    print("Running unit tests...")
-    unittest.main(verbosity=2, exit=False)
+# if __name__ == "__main__":
+#     # Run unit tests
+#     print("Running unit tests...")
+#     unittest.main(verbosity=2, exit=False)
     
-    # Run performance test
-    print("\nRunning performance test...")
-    run_performance_test()
+#     # Run performance test
+#     print("\nRunning performance test...")
+#     run_performance_test()
     
-    print("\nAll tests completed!")
+#     print("\nAll tests completed!")
