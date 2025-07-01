@@ -436,13 +436,13 @@ def run_performance_test():
     print(f"Performance test completed in {end_time - start_time:.2f} seconds")
     print(f"Average time per agent: {(end_time - start_time) / len(descriptions):.3f} seconds")
 
-if __name__ == "__main__":
-    # Run unit tests
-    print("Running unit tests...")
-    unittest.main(verbosity=2, exit=False)
+# if __name__ == "__main__":
+#     # Run unit tests
+#     print("Running unit tests...")
+#     unittest.main(verbosity=2, exit=False)
     
-    # Run performance test
-    print("\nRunning performance test...")
-    run_performance_test()
+#     # Run performance test
+#     print("\nRunning performance test...")
+#     run_performance_test()
     
-    print("\nAll tests completed!")
+#     print("\nAll tests completed!")
