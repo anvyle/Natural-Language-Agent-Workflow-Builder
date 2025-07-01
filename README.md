@@ -1,4 +1,4 @@
-# 🧠 Natural Language Agent/Workflow Builde
+# 🧠 Natural Language Agent/Workflow 
 
 Build powerful agents and workflows **using plain language**. This builder lets users describe their goals in natural language and instantly generate fully structured, testable agents without needing to write JSON or touch low-level logic.
 
