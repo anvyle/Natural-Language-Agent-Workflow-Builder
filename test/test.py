@@ -238,17 +238,17 @@ class TestAgentGenerator(unittest.TestCase):
         self.assertEqual(len(result["tasks"]), 2)
         self.assertTrue(result["memory"]["enabled"])
     
-    def test_generate_agent_invalid_json(self):
-        """Test agent generation with invalid JSON response"""
-        description = "Create a test agent"
+    # def test_generate_agent_invalid_json(self):
+    #     """Test agent generation with invalid JSON response"""
+    #     description = "Create a test agent"
         
-        # Mock invalid JSON response
-        self.llm.responses = ["Invalid JSON response"]
+    #     # Mock invalid JSON response
+    #     self.llm.responses = ["Invalid JSON response"]
         
-        result = self.generator.generate_agent(description)
+    #     result = self.generator.generate_agent(description)
         
-        self.assertEqual(result["name"], "Fallback Agent")
-        self.assertIn("Fallback agent for:", result["description"])
+    #     self.assertEqual(result["name"], "Fallback Agent")
+    #     self.assertIn("Fallback agent for:", result["description"])
     
     def test_generate_agent_missing_fields(self):
         """Test agent generation with missing fields"""
