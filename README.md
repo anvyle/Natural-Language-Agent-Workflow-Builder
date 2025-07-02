@@ -4,7 +4,7 @@ Build powerful agents and workflows **using plain language**. This builder lets 
 
 ---
 
-## 🎯 Purpose
+<!-- ## 🎯 Purpose
 
 Designed to **streamline agent creation**, this system bridges the gap between **human-friendly goal descriptions** and **machine-readable configurations** (`agent.json`). It's ideal for:
 
@@ -12,7 +12,7 @@ Designed to **streamline agent creation**, this system bridges the gap between *
 - Automation teams who want to rapidly prototype and iterate  
 - Users seeking to abstract away tool orchestration and task decomposition
 
----
+--- -->
 
 ## 🔗 Target Users & Platforms
 
