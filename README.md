@@ -1,9 +1,5 @@
 # 🧠 Natural Language Agent/Workflow Builder
 
-this is test
-this is test again
-this is test again
-
 Build powerful agents and workflows **using plain language**. This builder lets users describe their goals in natural language and instantly generate fully structured, testable agents without needing to write JSON or touch low-level logic.
 
 ---
